@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import "./locations.css"
 
 export const LocationList = () => {
 
     const [locations, setLocations] = useState([])
-
-    // const localUser = localStorage.getItem("kandy_user")
-    // const userObject = JSON.parse(localUser)
 
     useEffect(
         () => {
