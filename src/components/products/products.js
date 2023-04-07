@@ -9,10 +9,15 @@ export const ProductList = () => {
 
     useEffect(
         () => {
-            fetch('http://localhost:8088/products')
+            //sort in fetch with /products?_sort=name&_order=asc
+            // why does this not work??? products?_expand=productType(NO 'S')
+            // changing typeId to productTypeId did not work
+            // BUT RENAMING productTypes to types and then expand 'type' DOES work
+            // what rule is being broken here? no caps?
+            fetch('http://localhost:8088/products?_expand=type')
             .then(response => response.json())
             .then((responseArray) => {
-                //HAD TO MAKE A COPY OF RESPONSE, THEN SORT
+                //THIS SORT WORKS BECAUSE IT MAKES A COPY OF THE RESPONSE ARRAY FIRST!
                 const sortedArray = [...responseArray].sort((a, b) => (b.name > a.name ? -1 : 1))
                 //ATTEMPT 1 TO SORT, NO WORK
                 // const sortedArray = responseArray.sort((a, b) => a.name > b.name);
@@ -48,7 +53,7 @@ export const ProductList = () => {
     {filteredProducts.map(
             (product) => {
                 return <section className="product" key={`product--${product.id}`}>
-                            <div>{product.name} - ${product.price}</div>
+                            <div><strong>{product.name}</strong> ({product.type.name}) - ${product.price}</div>
                         </section>
             }
     )}
