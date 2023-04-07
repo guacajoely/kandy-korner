@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react"
 import "./products.css"
+import { useNavigate } from "react-router-dom"
 
 export const ProductList = () => {
 
     const [products, setProducts] = useState([])
     const [filteredProducts, setFiltered] = useState([])
     const [priceyOnly, updatePriceyOnly] = useState(false)
+    const navigate = useNavigate()
+
+    const localUser = localStorage.getItem("kandy_user")
+    const userObject = JSON.parse(localUser)
 
     useEffect(
         () => {
@@ -47,6 +52,7 @@ export const ProductList = () => {
 
 
     return <>
+   
     <h2>List of products</h2>
     <article className="products">
 
@@ -57,8 +63,16 @@ export const ProductList = () => {
                         </section>
             }
     )}
-    <button onClick={() => updatePriceyOnly(true)}>Top Priced</button>
-    <button onClick={() => updatePriceyOnly(false)}>Show All</button>
+
+    {userObject.staff ? 
+            <>
+                <button onClick={() => navigate("/product/create")}>Add New Product</button>
+            </>
+            :<>
+                <button onClick={() => updatePriceyOnly(true)}>Top Priced</button>
+                <button onClick={() => updatePriceyOnly(false)}>Show All</button>
+            </>
+        }
     </article>
     </>
 }
