@@ -1,7 +1,19 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 export const ProductForm = () => {
+
+    //create productType state
+    const [productTypes, setProductTypes] = useState([])
+
+    //Update/set productType state
+    useEffect(
+        () => {fetch('http://localhost:8088/types')
+                .then(response => response.json())
+                .then((responseArray) => {setProductTypes(responseArray)})
+        },[])
+
+    console.log(productTypes)
 
     // Add the correct default properties to the initial state object
     const [newProduct, update] = useState({
@@ -88,8 +100,9 @@ export const ProductForm = () => {
                                 update(copy)
                             }
                         } >
-                        <option value="1">Soda</option>
-                        <option value="2">Hard Candy</option>
+
+                        {productTypes.map((type) => {return <option value={`${type.id}`}>{type.name}</option>})}
+
                     </select>
                 </div>
             </fieldset>
