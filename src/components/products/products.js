@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import "./products.css"
 import { useNavigate } from "react-router-dom"
 
-export const ProductList = () => {
+export const ProductList = ({ searchTermState }) => {
 
     const [products, setProducts] = useState([])
     const [filteredProducts, setFiltered] = useState([])
@@ -14,21 +14,30 @@ export const ProductList = () => {
 
     useEffect(
         () => {
+            const searchedProducts = products.filter(product => {
+                return product.name.toLowerCase().startsWith(searchTermState.toLowerCase())
+            })
+            setFiltered(searchedProducts)
+        }, [searchTermState]
+    )
+
+    useEffect(
+        () => {
             //sort in fetch with /products?_sort=name&_order=asc
             // why does this not work??? products?_expand=productType(NO 'S')
             // changing typeId to productTypeId did not work
             // BUT RENAMING productTypes to types and then expand 'type' DOES work
             // what rule is being broken here? no caps?
-            fetch('http://localhost:8088/products?_expand=type')
+            fetch('http://localhost:8088/products?_expand=productType&?_sort=name&_order=asc')
             .then(response => response.json())
             .then((responseArray) => {
                 //THIS SORT WORKS BECAUSE IT MAKES A COPY OF THE RESPONSE ARRAY FIRST!
-                const sortedArray = [...responseArray].sort((a, b) => (b.name > a.name ? -1 : 1))
+                // const sortedArray = [...responseArray].sort((a, b) => (b.name > a.name ? -1 : 1))
                 //ATTEMPT 1 TO SORT, NO WORK
                 // const sortedArray = responseArray.sort((a, b) => a.name > b.name);
                 //ATTEMPT 2 TO SORT, NO WORK
                 // const sortedArray = Array.from(responseArray).sort((a, b) => a.name.localeCompare(b.name))
-                setProducts(sortedArray)
+                setProducts(responseArray)
             })
         },
         [] // When this array is empty, you are observing initial component state
@@ -59,7 +68,7 @@ export const ProductList = () => {
     {filteredProducts.map(
             (product) => {
                 return <section className="product" key={`product--${product.id}`}>
-                            <div><strong>{product.name}</strong> ({product.type.name}) - ${product.price}</div>
+                            <div><strong>{product.name}</strong> ({product.productType.name}) - ${product.price}</div>
                         </section>
             }
     )}

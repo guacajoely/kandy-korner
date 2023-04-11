@@ -73,7 +73,7 @@ export const ProductForm = () => {
             </fieldset>
             <fieldset>
             <div className="form-group">
-                    <label htmlFor="price">Name:</label>
+                    <label htmlFor="price">Price:</label>
                     <input
                         required autoFocus
                         type="number"
