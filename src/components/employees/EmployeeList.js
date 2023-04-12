@@ -9,7 +9,7 @@ export const EmployeeList = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetch('http://localhost:8088/users?isStaff=true')
+        fetch('http://localhost:8088/employees?_expand=user&_expand=location')
             .then(response => response.json())
             .then((employeeArray) => {
                 setEmployees(employeeArray)
@@ -22,8 +22,11 @@ export const EmployeeList = () => {
         {
             employees.map(employee => <Employee key={`employee--${employee.id}`}
                                         id={employee.id} 
-                                        fullName={employee.fullName} 
-                                        email={employee.email} />)
+                                        fullName={employee.user.fullName} 
+                                        email={employee.user.email}
+                                        payRate={employee.payRate}
+                                        startDate={employee.startDate}
+                                        location={employee.location.address} />)
         }
     </article>
     <button onClick={() => navigate("/employees/create")}>Add an employee</button>
