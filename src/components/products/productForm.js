@@ -8,7 +8,7 @@ export const ProductForm = () => {
 
     //Update/set productType state
     useEffect(
-        () => {fetch('http://localhost:8088/types')
+        () => {fetch('http://localhost:8088/productTypes')
                 .then(response => response.json())
                 .then((responseArray) => {setProductTypes(responseArray)})
         },[])
@@ -19,8 +19,7 @@ export const ProductForm = () => {
     const [newProduct, update] = useState({
         name: "",
         price: "",
-        typeId: 0
-
+        productTypeId: 0
     })
     // Use the useNavigate() hook so you can redirect the user to the product list after posting a new product
     const navigate = useNavigate()
@@ -33,7 +32,7 @@ export const ProductForm = () => {
         const ticketToSendToAPI = {
         name: newProduct.name,
         price: newProduct.price,
-        typeId: newProduct.typeId
+        productTypeId: newProduct.productTypeId
         }
 
         // Perform the fetch() to POST the object to the API
@@ -96,7 +95,7 @@ export const ProductForm = () => {
                     <select className="form-control" id="types" name="types" onChange={
                             (event) => {
                                 const copy = {...newProduct}
-                                copy.typeId = event.target.value
+                                copy.productTypeId = event.target.value
                                 update(copy)
                             }
                         } >
