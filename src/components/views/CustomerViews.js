@@ -3,6 +3,7 @@ import { LocationList } from "../locations/locations.js"
 import { ProductList } from "../products/products.js"
 import { ProductForm } from "../products/productForm.js"
 import { ProductContainer } from "../products/productContainer.js"
+import { ProductLocations } from "../products/productLocation.js"
 
 export const CustomerViews = () => {
 	return (
@@ -20,6 +21,7 @@ export const CustomerViews = () => {
                 <Route path="products" element={ <ProductList /> } />
                 <Route path="product/create" element={ <ProductForm /> } />
                 <Route path="product/find" element={ <ProductContainer /> } />
+                <Route path="product/:productId" element={ <ProductLocations/> } />
 
     
             </Route>
