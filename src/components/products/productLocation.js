@@ -6,44 +6,22 @@ export const ProductLocations = () => {
     const {productId} = useParams()
     // changing use state to an empty object breaks, why????
     // why did we start initial value of product (customer/employee) with empty object in honey raes?
-    const [product, updateProduct] = useState()
-    const [locations, updateLocations] = useState([])
+    const [productLocations, updateProductLocations] = useState()
 
     useEffect(
         () => {
-            fetch(`http://localhost:8088/products?_embed=productLocations&id=${productId}`)
+            fetch(`http://localhost:8088/productLocations?_expand=product&_expand=location&productId=${productId}`)
             .then(response => response.json())
-            .then((productArray) => {
-                const singleProductObject = productArray[0]
-                updateProduct(singleProductObject)
+            .then((productLocationArray) => {
+                updateProductLocations(productLocationArray)
             })
         },
         [productId]
     )
 
-    useEffect(
-        () => {
-            fetch(`http://localhost:8088/locations`)
-            .then(response => response.json())
-            .then((locationArray) => {
-                updateLocations(locationArray)
-            })
-        },
-        []
-    )
+    const locationList = productLocations?.map((productLocation) => { 
+        return productLocation.location.address}).join(" ")
 
-    return <>
-        {product?.productLocations.forEach( (productLocation) => { 
-            return window.alert(`${productLocation.locationId}`) 
-           /* locations.map( (location) => {
-                if(location.id === productLocation.locationId){
-                    return window.alert(`${location.name}`)
-                 
-                }
-            }) */
-        }
-
-)}
-    </>
-
+    return window.alert(`${locationList}`)
+    
 }
