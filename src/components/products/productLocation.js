@@ -19,9 +19,10 @@ export const ProductLocations = () => {
         [productId]
     )
 
+    if(productLocations){
     const locationList = productLocations?.map((productLocation) => { 
-        return productLocation.location.address}).join(" ")
-
+        return productLocation.location.address}).join("\n")
     return window.alert(`${locationList}`)
+    }
     
 }
