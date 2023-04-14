@@ -8,14 +8,22 @@ export const EmployeeList = () => {
     const [employees, setEmployees] = useState([])
     const navigate = useNavigate()
 
-    useEffect(() => {
+    const getAllEmployees = () => {
         fetch('http://localhost:8088/employees?_expand=user&_expand=location')
-            .then(response => response.json())
-            .then((employeeArray) => {
-                setEmployees(employeeArray)
-            })
+        .then(response => response.json())
+        .then((employeeArray) => {
+            setEmployees(employeeArray)
+        })
+    }
+
+    useEffect(() => {
+        
+        getAllEmployees()
+
         }, []
     )
+
+ 
 
     return <>
     <article className="employees">
@@ -26,7 +34,9 @@ export const EmployeeList = () => {
                                         email={employee.user.email}
                                         payRate={employee.payRate}
                                         startDate={employee.startDate}
-                                        location={employee.location.address} />)
+                                        location={employee.location.address} 
+                                        getAllEmployees={getAllEmployees}
+                                        />)
         }
     </article>
     <button onClick={() => navigate("/employees/create")}>Add an employee</button>

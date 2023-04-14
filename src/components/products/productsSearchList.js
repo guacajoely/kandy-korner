@@ -21,6 +21,7 @@ export const ProductsOnly = ({ searchTermState }) => {
             .then(response => response.json())
             .then((responseArray) => {
                 setProducts(responseArray)
+                setFiltered(responseArray)
             })
         },
         [] 

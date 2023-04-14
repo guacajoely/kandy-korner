@@ -88,7 +88,8 @@ export const ProductList = ({ searchTermState }) => {
         filteredProducts.map(
         (product) => {
             return <section className="product" key={`product--${product.id}`}>
-                        <div><strong>{product.name}</strong> ({product.productType.name}) - ${product.price}</div>
+
+                        <div><strong>{product.name}</strong> ({product.productType.name}) - ${product.price}
                         <button onClick={() => {
 
                                 fetch(`http://localhost:8088/purchases`, {
@@ -104,11 +105,9 @@ export const ProductList = ({ searchTermState }) => {
 
                                 })
                                 .then(response => response.json())
-}
 
-
-
-                        }>Purchase</button> 
+                        }}>Purchase</button> 
+                        </div>
                     </section>
         })     
     }
