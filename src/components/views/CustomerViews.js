@@ -1,9 +1,10 @@
 import { Outlet, Route, Routes } from "react-router-dom"
 import { LocationList } from "../locations/locations.js"
-import { ProductList } from "../products/products.js"
-import { ProductForm } from "../products/productForm.js"
-import { ProductContainer } from "../products/productContainer.js"
+import { ProductList } from "../products/productList.js"
+import { ProductForm } from "../products/newProductForm.js"
+import { ProductContainer } from "../products/productSearchContainer.js"
 import { ProductLocations } from "../products/productLocation.js"
+import { ProductCart } from "../products/productCart.js"
 
 export const CustomerViews = () => {
 	return (
@@ -19,6 +20,7 @@ export const CustomerViews = () => {
 
                 <Route path="locations" element={ <LocationList /> } />
                 <Route path="products" element={ <ProductList /> } />
+                <Route path="products/cart" element={ <ProductCart/> } />
                 <Route path="product/create" element={ <ProductForm /> } />
                 <Route path="product/find" element={ <ProductContainer /> } />
                 <Route path="product/:productId" element={ <ProductLocations/> } />

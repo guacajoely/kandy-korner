@@ -13,8 +13,6 @@ export const ProductForm = () => {
                 .then((responseArray) => {setProductTypes(responseArray)})
         },[])
 
-    console.log(productTypes)
-
     // Add the correct default properties to the initial state object
     const [newProduct, update] = useState({
         name: "",
@@ -31,7 +29,7 @@ export const ProductForm = () => {
         // Create the object to be saved to the API
         const ticketToSendToAPI = {
         name: newProduct.name,
-        price: newProduct.price,
+        price:  parseFloat(newProduct.price, 2),
         productTypeId: newProduct.productTypeId
         }
 
@@ -100,7 +98,7 @@ export const ProductForm = () => {
                             }
                         } >
 
-                        {productTypes.map((type) => {return <option value={`${type.id}`}>{type.name}</option>})}
+                        {productTypes.map((type) => {return <option key={`${type.id}`} value={`${type.id}`}>{type.name}</option>})}
 
                     </select>
                 </div>

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 export const ProductList = ({ searchTermState }) => {
 
     const [products, setProducts] = useState([])
+    const [customers, setCustomers] = useState([])
     const [filteredProducts, setFiltered] = useState([])
     const [priceyOnly, updatePriceyOnly] = useState(false)
     const navigate = useNavigate()
@@ -12,10 +13,13 @@ export const ProductList = ({ searchTermState }) => {
     const localUser = localStorage.getItem("kandy_user")
     const userObject = JSON.parse(localUser)
 
+     //find the employee object for the current user
+     const userCustomer = customers.find(customer => customer.userId === userObject.id)
+
     useEffect(
         () => {
             const searchedProducts = products.filter(product => {
-                return product.name.toLowerCase().startsWith(searchTermState.toLowerCase())
+                return product?.name.toLowerCase().startsWith(searchTermState.toLowerCase())
             })
             setFiltered(searchedProducts)
         }, [searchTermState]
@@ -43,6 +47,14 @@ export const ProductList = ({ searchTermState }) => {
         [] // When this array is empty, you are observing initial component state
     )
 
+    useEffect(() => {fetch('http://localhost:8088/customers')
+        .then(response => response.json())
+        .then((responseArray) => {
+            setCustomers(responseArray)
+        })
+    }, 
+    [] )
+
     //When the employee clicks on a button labeled "Top Priced" Then only products that cost more than $2.00 per unit should be displayed
     useEffect(
         () => {
@@ -65,13 +77,41 @@ export const ProductList = ({ searchTermState }) => {
     <h2>List of products</h2>
     <article className="products">
 
-    {filteredProducts.map(
+    {userObject.staff ?
+        filteredProducts.map(
             (product) => {
                 return <section className="product" key={`product--${product.id}`}>
                             <div><strong>{product.name}</strong> ({product.productType.name}) - ${product.price}</div>
                         </section>
-            }
-    )}
+        }) :
+            
+        filteredProducts.map(
+        (product) => {
+            return <section className="product" key={`product--${product.id}`}>
+                        <div><strong>{product.name}</strong> ({product.productType.name}) - ${product.price}</div>
+                        <button onClick={() => {
+
+                                fetch(`http://localhost:8088/purchases`, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        customerId: userCustomer.id,
+                                        productId: product.id,
+                                        quantity: 1
+                                    })
+
+                                })
+                                .then(response => response.json())
+}
+
+
+
+                        }>Purchase</button> 
+                    </section>
+        })     
+    }
 
     {userObject.staff ? 
             <>

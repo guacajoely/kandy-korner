@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
 import "./products.css"
-import { Product } from "./product.js"
+import { Link } from "react-router-dom"
 
 export const ProductsOnly = ({ searchTermState }) => {
 
     const [products, setProducts] = useState([])
     const [filteredProducts, setFiltered] = useState([])
-    const [clickedProduct, setClickedProduct] = useState({})
 
     useEffect(
         () => {
@@ -34,10 +33,12 @@ export const ProductsOnly = ({ searchTermState }) => {
 
     {filteredProducts.map(
             (product) => {
-                return  (<Product key={`Product--${product.id}`}
-                                        id={product.id} 
-                                        name={product.name} 
-                                        price={product.price} />)
+                return  <section className="product" key={`product--${product.id}`}>
+                            <div>
+                                <strong>{product.name}</strong> (${product.price})
+                                <Link to={`/product/${product.id}`}><button>Show me where</button></Link>
+                            </div>
+                        </section>
             }
     )}
 
