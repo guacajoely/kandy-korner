@@ -9,6 +9,7 @@
     border: 2px dotted fuchsia;
     padding: .5rem;
     margin: .5rem;
+    width: 400px;
 }
 
 .customer__footer {
