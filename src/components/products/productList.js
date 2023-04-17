@@ -16,7 +16,6 @@ export const ProductList = ({ searchTermState }) => {
 
      //find the employee object for the current user
      const userCustomer = customers.find(customer => customer.userId === userObject.id)
-     console.log(userCustomer)
 
     useEffect(
         () => {

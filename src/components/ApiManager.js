@@ -1,5 +1,5 @@
-export const getCustomersSortedByPurchases = () => {
-    return fetch('http://localhost:8088/customers?isStaff=false&_expand=user')
+export const getCustomersWithPurchases = () => {
+    return fetch('http://localhost:8088/customers?_expand=user&_embed=purchases')
     .then(response => response.json())
 }
 
