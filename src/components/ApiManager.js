@@ -1,5 +1,5 @@
-export const getAllCustomers = () => {
-    return fetch('http://localhost:8088/users?isStaff=false')
+export const getCustomersSortedByPurchases = () => {
+    return fetch('http://localhost:8088/customers?isStaff=false&_expand=user')
     .then(response => response.json())
 }
 
@@ -64,8 +64,6 @@ export const getProductLocations = (id) => {
     return fetch(`http://localhost:8088/productLocations?_expand=product&_expand=location&productId=${id}`)
     .then(response => response.json())
 }
-
-
 
 export const createProduct = (productObject) => {
     return fetch('http://localhost:8088/products', {

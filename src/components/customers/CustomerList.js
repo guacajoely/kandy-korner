@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
 import { Customer } from "./Customer.js"
 import "./Customers.css"
-import { getAllCustomers } from "../ApiManager.js"
+import { getCustomersSortedByPurchases } from "../ApiManager.js"
 
 export const CustomerList = () => {
 
     const [customers, setCustomers] = useState([])
 
     useEffect(() => {
-        getAllCustomers()
+        getCustomersSortedByPurchases()
             .then((customerArray) => {
                 setCustomers(customerArray)
             })
@@ -18,10 +18,11 @@ export const CustomerList = () => {
     return <>
     <article className="customers">
         {
-            customers.map(customer => <Customer key={`customer--${customer.id}`}
-                                        id={customer.id} 
-                                        fullName={customer.fullName} 
-                                        email={customer.email}/>)
+            customers.map(customer => <Customer id={customer.id} 
+                                        fullName={customer?.user.fullName} 
+                                        email={customer?.user.email}
+                                        userId={customer?.user.id}
+                                        />)
         }
     </article>
     </>

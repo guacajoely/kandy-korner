@@ -36,7 +36,7 @@ export const ProductCart = () => {
 
     {purchases.map(
         (purchase) => {
-            return <section className="purchase" key={`purchase--${purchase.id}`}>
+            return <section className="purchase" key={`purchase--${purchase?.id}`}>
                         <div><strong>{purchase.product.name}</strong> (${purchase.product.price.toFixed(2)})</div>
                     </section>
         })
