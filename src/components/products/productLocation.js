@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { getProductLocations } from "../ApiManager.js"
 
 export const ProductLocations = () => {
 
@@ -10,8 +11,7 @@ export const ProductLocations = () => {
 
     useEffect(
         () => {
-            fetch(`http://localhost:8088/productLocations?_expand=product&_expand=location&productId=${productId}`)
-            .then(response => response.json())
+            getProductLocations(productId)
             .then((productLocationArray) => {
                 updateProductLocations(productLocationArray)
             })

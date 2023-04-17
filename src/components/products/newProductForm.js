@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { createProduct, getProductTypes } from "../ApiManager.js"
 
 export const ProductForm = () => {
 
@@ -8,8 +9,7 @@ export const ProductForm = () => {
 
     //Update/set productType state
     useEffect(
-        () => {fetch('http://localhost:8088/productTypes')
-                .then(response => response.json())
+        () => {getProductTypes()
                 .then((responseArray) => {setProductTypes(responseArray)})
         },[])
 
@@ -27,21 +27,14 @@ export const ProductForm = () => {
 
 
         // Create the object to be saved to the API
-        const ticketToSendToAPI = {
+        const productToSendToAPI = {
         name: newProduct.name,
         price:  parseFloat(newProduct.price, 2),
         productTypeId: newProduct.productTypeId
         }
 
         // Perform the fetch() to POST the object to the API
-        return fetch('http://localhost:8088/products', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(ticketToSendToAPI)
-        })
-        .then(response => response.json())
+        return createProduct(productToSendToAPI)
         .then(()=> {
             navigate("/products")
         })

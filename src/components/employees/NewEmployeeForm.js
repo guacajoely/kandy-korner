@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { createEmployee, createUser, getLocations, getUsers } from "../ApiManager.js"
 
 export const NewEmployeeForm = () => {
 
@@ -8,8 +9,7 @@ export const NewEmployeeForm = () => {
 
     //Update/set locationArray state
     useEffect(
-        () => {fetch('http://localhost:8088/locations')
-                .then(response => response.json())
+        () => {getLocations()
                 .then((responseArray) => {setLocationArray(responseArray)})
         },[])
 
@@ -18,8 +18,7 @@ export const NewEmployeeForm = () => {
 
     //Update/set locationArray state
     useEffect(
-        () => {fetch('http://localhost:8088/users')
-                .then(response => response.json())
+        () => {getUsers()
                 .then((responseArray) => {setUserArray(responseArray)})
         },[])
 
@@ -71,24 +70,10 @@ export const NewEmployeeForm = () => {
 
 
         // TODO: Perform the fetch() to POST the USER object to the API
-        return fetch('http://localhost:8088/users', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(userToSendToAPI)
-        })
-        .then(response => response.json())
+        return createUser(userToSendToAPI)
 
         // TODO: Perform the fetch() to POST the EMPLOYEE object to the API
-        .then(fetch('http://localhost:8088/employees', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(employeeToSendToAPI)
-        })
-        .then(response => response.json())
+        .then((createEmployee(employeeToSendToAPI))
 
         // NAVIGATE BACK TO EMPLOYEE LIST
         .then(()=> {

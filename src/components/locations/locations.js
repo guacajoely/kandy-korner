@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import "./locations.css"
+import { getLocations } from "../ApiManager.js"
 
 export const LocationList = () => {
 
@@ -7,8 +8,7 @@ export const LocationList = () => {
 
     useEffect(
         () => {
-            fetch('http://localhost:8088/locations')
-            .then(response => response.json())
+            getLocations()
             .then((responseArray) => {
                 setLocations(responseArray)
             })

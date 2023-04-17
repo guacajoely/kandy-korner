@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { editCustomer, getCustomerById, getExpandedCustomerById } from "../ApiManager.js"
 
 export const CustomerDetails = () => {
 
@@ -15,8 +16,7 @@ export const CustomerDetails = () => {
     //Get employee info from API (can't use other fetch because it includes user expansion)
     useEffect(
         () => {
-            fetch(`http://localhost:8088/customers?userId=${customerId}`)
-            .then(response => response.json())
+            getCustomerById(customerId)
             .then((customerArray) => {
                 const singleCustomer = customerArray[0]
                 updateProfile(singleCustomer)
@@ -41,15 +41,7 @@ export const CustomerDetails = () => {
         event.preventDefault()
 
         //PUT the new customer profile to replace the old loyalty id in the database
-            fetch(`http://localhost:8088/customers/${profile.id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(profile)
-
-            })
-            .then(response => response.json())
+            editCustomer(profile)
 
             // FEEDBACK - chain the following Promise code to your PUT operation.
             .then(() => {
@@ -60,8 +52,7 @@ export const CustomerDetails = () => {
 
     useEffect(
         () => {
-            fetch(`http://localhost:8088/customers?_expand=user&userId=${customerId}`)
-            .then(response => response.json())
+            getExpandedCustomerById(customerId)
             .then((customerArray) => {
                 const singleCustomer = customerArray[0]
                 updateCustomer(singleCustomer)

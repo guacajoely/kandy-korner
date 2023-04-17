@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { Employee } from "./Employee.js"
 import "./Employees.css"
 import { useEffect, useState } from "react"
+import { getEmployees } from "../ApiManager.js"
 
 export const EmployeeList = () => {
 
@@ -9,8 +10,7 @@ export const EmployeeList = () => {
     const navigate = useNavigate()
 
     const getAllEmployees = () => {
-        fetch('http://localhost:8088/employees?_expand=user&_expand=location')
-        .then(response => response.json())
+        getEmployees()
         .then((employeeArray) => {
             setEmployees(employeeArray)
         })

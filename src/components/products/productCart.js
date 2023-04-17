@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { getCustomers, getPurchases } from "../ApiManager.js"
 
 export const ProductCart = () => {
 
@@ -6,8 +7,7 @@ export const ProductCart = () => {
     const [customers, setCustomers] = useState([])
     const [purchases, setPurchases] = useState([])
 
-    useEffect(() => {fetch('http://localhost:8088/customers')
-        .then(response => response.json())
+    useEffect(() => {getCustomers()
         .then((responseArray) => {
             setCustomers(responseArray)
         })
@@ -21,8 +21,7 @@ export const ProductCart = () => {
     const userCustomer = customers.find(customer => customer.userId === userObject.id)
 
     useEffect(() => {
-        fetch(`http://localhost:8088/purchases?customerId=${userCustomer?.id}&_expand=product`)
-        .then(response => response.json())
+        getPurchases(userCustomer?.id)
         .then((responseArray) => {
             setPurchases(responseArray)
         })

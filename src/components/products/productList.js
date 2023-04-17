@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import "./products.css"
 import { useNavigate } from "react-router-dom"
+import { createPurchase, getCustomers, getProducts } from "../ApiManager.js"
 
 export const ProductList = ({ searchTermState }) => {
 
@@ -27,28 +28,17 @@ export const ProductList = ({ searchTermState }) => {
 
     useEffect(
         () => {
-            //sort in fetch with /products?_sort=name&_order=asc
-            // why does this not work??? products?_expand=productType(NO 'S')
-            // changing typeId to productTypeId did not work
-            // BUT RENAMING productTypes to types and then expand 'type' DOES work
-            // what rule is being broken here? no caps?
-            fetch('http://localhost:8088/products?_expand=productType&?_sort=name&_order=asc')
-            .then(response => response.json())
+            getProducts()
             .then((responseArray) => {
-                //THIS SORT WORKS BECAUSE IT MAKES A COPY OF THE RESPONSE ARRAY FIRST!
+                //ORIGINAL SORT METHOD
                 // const sortedArray = [...responseArray].sort((a, b) => (b.name > a.name ? -1 : 1))
-                //ATTEMPT 1 TO SORT, NO WORK
-                // const sortedArray = responseArray.sort((a, b) => a.name > b.name);
-                //ATTEMPT 2 TO SORT, NO WORK
-                // const sortedArray = Array.from(responseArray).sort((a, b) => a.name.localeCompare(b.name))
                 setProducts(responseArray)
             })
         },
         [] // When this array is empty, you are observing initial component state
     )
 
-    useEffect(() => {fetch('http://localhost:8088/customers')
-        .then(response => response.json())
+    useEffect(() => {getCustomers()
         .then((responseArray) => {
             setCustomers(responseArray)
         })
@@ -91,20 +81,8 @@ export const ProductList = ({ searchTermState }) => {
 
                         <div><strong>{product.name}</strong> ({product.productType.name}) - ${product.price}
                         <button onClick={() => {
-
-                                fetch(`http://localhost:8088/purchases`, {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    body: JSON.stringify({
-                                        customerId: userCustomer.id,
-                                        productId: product.id,
-                                        quantity: 1
-                                    })
-
-                                })
-                                .then(response => response.json())
+                    
+                            createPurchase(userCustomer.id, product.id)
 
                         }}>Purchase</button> 
                         </div>

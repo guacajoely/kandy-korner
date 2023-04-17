@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import "./products.css"
 import { Link } from "react-router-dom"
+import { getProducts } from "../ApiManager.js"
 
 export const ProductsOnly = ({ searchTermState }) => {
 
@@ -17,8 +18,7 @@ export const ProductsOnly = ({ searchTermState }) => {
     )
 
     useEffect(
-        () => {fetch('http://localhost:8088/products?_expand=productType&?_sort=name&_order=asc')
-            .then(response => response.json())
+        () => {getProducts()
             .then((responseArray) => {
                 setProducts(responseArray)
                 setFiltered(responseArray)
