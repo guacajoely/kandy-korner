@@ -73,7 +73,7 @@ export const ProductCart = () => {
     {sortedPurchases.map(
         (purchase) => {
             return <section className="purchase" key={`purchase--${purchase?.id}`}>
-                        <div><strong>{purchase.product.name}</strong> x{purchase.quantity}  (${purchase.product.price.toFixed(2)} each)</div>
+                        <div><strong>{purchase.product.name}</strong> x{purchase.quantity}  ( Total: ${(purchase.product.price * purchase.quantity).toFixed(2)} )</div>
                     </section>
         })
     }
