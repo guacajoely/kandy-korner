@@ -28,16 +28,52 @@ export const ProductCart = () => {
     }, 
     [userCustomer] )
 
+
+
+    function sortPurchases(arrayOfPurchases){
+
+        let newArray = [];
+
+        arrayOfPurchases.forEach((purchase)=>{
+             
+        // Check if there are any purchases in newArray that contain the same productId
+           if(newArray.some((object)=>{ return object["productId"] === purchase["productId"] })){
+               
+            // If yes! then increase the quantity by 1
+                newArray.forEach((newPurchase)=>{
+                    if(newPurchase["productId"] === purchase["productId"]){ 
+                        newPurchase["quantity"]++
+                    }
+                })  
+           }
+           
+           // If not! Then create a new purchase, set the quantity to 1, and push it to the new array
+           else{
+             let copy = purchase
+             copy["quantity"] = 1
+             newArray.push(copy);
+           }
+        })
+          
+        //return our new array when we're done
+        return newArray
+      }
+
+      
+      const sortedPurchases = sortPurchases(purchases)
+
+    
+
     // return mapped purchases with JSX
     return <>
    
     <h2>My Orders</h2>
     <article className="products">
 
-    {purchases.map(
+    {sortedPurchases.map(
         (purchase) => {
             return <section className="purchase" key={`purchase--${purchase?.id}`}>
-                        <div><strong>{purchase.product.name}</strong> (${purchase.product.price.toFixed(2)})</div>
+                        <div><strong>{purchase.product.name}</strong> x{purchase.quantity}  (${purchase.product.price.toFixed(2)} each)</div>
                     </section>
         })
     }
